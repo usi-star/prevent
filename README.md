@@ -133,7 +133,7 @@ The flies contains a dataset corresponding to normal and faulty executions. Nami
 
 * **Classifications-Prevent-A.zip**: output of **PREVENT-A Classifier** - classifications made on the datasets with normal data and data collected from the executions with seeded faults. It contains a set of files with classifications per timestamp where 0 corresponds to normal state and 1 indicates a failure:
 
-    * **normal_w3.csv**: classifications per timestamp for dataset collected with normal execution conditions (third week of normal data).
+    * **normal_w3.csv**: classifications per timestamp for dataset collected with normal execution conditions (one week of normal data).
     * **e1.csv**: classifications per timestamp for the dataset with **Memory Leak** failures injected with **exponential pattern**.
     * **e2.csv**: classifications per timestamp for the dataset with **Memory Leak** failures injected with **linear pattern**.
     * **e3.csv**: classifications per timestamp for the dataset with **Memory Leak** failures injected with **random pattern**.
@@ -146,7 +146,7 @@ The flies contains a dataset corresponding to normal and faulty executions. Nami
 
 * **Classifications-Prevent-E.zip**: output of **PREVENT-E Classifier**- classifications made on the datasets with normal data and data collected from the executions with seeded faults. It contains a set of files with classifications per timestamp where 0 corresponds to normal state and 1 indicates a failure:
 
-    * **normal_w3.csv**: classifications per timestamp for dataset collected with normal execution conditions (third week of normal data).
+    * **normal_w3.csv**: classifications per timestamp for dataset collected with normal execution conditions (one week of normal data).
     * **e1.csv**: classifications per timestamp for the dataset with **Memory Leak** failures injected with **exponential pattern**.
     * **e2.csv**: classifications per timestamp for the dataset with **Memory Leak** failures injected with **linear pattern**.
     * **e3.csv**: classifications per timestamp for the dataset with **Memory Leak** failures injected with **random pattern**.
@@ -160,7 +160,7 @@ The flies contains a dataset corresponding to normal and faulty executions. Nami
 
 * **Localizations-Loud.zip**: This folder contains the localizations made on the data sets with normal data and the data collected from the executions with seeded faults. It has two folders: localizations-nodes and localizations-pairs. The localizations-nodes folder includes files indicating the cluster nodes identified as suspicious (to be a source of failure propagation) for each observation. This data represents an output of Loud. The localizations-pairs folder contains a set of files (one document for each experiment) indicating the master-slave pairs identified as suspicious (to be a source of failure propagation) for each observation.
 
-    * **normal_w3.csv**: localizations per timestamp for dataset collected with normal execution conditions (third week of normal data).
+    * **normal_w3.csv**: localizations per timestamp for dataset collected with normal execution conditions (one week of normal data).
     * **e1.csv**: localizations per timestamp for the dataset with **Memory Leak** failures injected with **exponential pattern**.
     * **e2.csv**: localizations per timestamp for the dataset with **Memory Leak** failures injected with **linear pattern**.
     * **e3.csv**: localizations per timestamp for the dataset with **Memory Leak** failures injected with **random pattern**.
