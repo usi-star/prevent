@@ -214,6 +214,91 @@ The experiments compare:
 <br>
 <br>
 
+
+## RESULTS
+### Folder: Results
+### Summary
+
+This folder contains a set of scripts consolidating andpresenting the final results of the experiments.
+
+### Environment Initialization
+
+    - Prerequisites:
+        - OS: tested on macOS Catalina
+    - Install the packages:
+        python -m pip install -r requirements.txt
+    - Activate the environment:
+        source venv/bin/activate
+
+### Generate consolidated reports:
+
+    Consolidated report for Prevent-A:
+    python create-report-consolidated-prevent.py 0
+        - Input:
+            - Classifications-Prevent-A :: e1:9
+            - Localizations-Loud :: localizations-pairs :: e1:9
+        - Output: Consolidated report for Prevent-A
+
+    Consolidated report for Prevent-E:
+    python create-report-consolidated-prevent.py 1
+        - Input:
+            - Classifications-Prevent-E :: e1:9
+            - Localizations-Loud :: localizations-pairs :: e1:9
+        - Output: Consolidated report for Prevent-E
+
+    Consolidated report for Premise:
+    python create-report-consolidated-premise.py
+        - Input: Classifications-Premise
+        - Output: Consolidated report for Premise
+
+### Calculate/Print FPR for Prevent-A, Prevent-E, and Loud:
+
+    For Prevent-A:
+    python calculate-fpr-normal-data-prevent.py prevent-a normal_w3
+        - Input: Classifications-Prevent-A :: normal_w3
+        - Output: Print FPR
+
+    For Prevent-E:
+    python calculate-fpr-normal-data-prevent.py prevent-e normal_w3
+        - Input: Classifications-Prevent-E :: normal_w3
+        - Output: Print FPR
+
+    For Loud:
+    python calculate-fpr-normal-data-loud.py loud normal_w3
+        - Input: Localizations-Loud :: localizations-nodes :: normal_w3
+        - Output: Print FPR
+
+### Calculate/Print the prediction earliness/stability for Prevent-A, Prevent-E, and Loud:
+
+    python print_earliness_and_stability.py
+        - Input:
+            - Consolidated report for Prevent-A
+            - Consolidated report for Prevent-E
+            - Consolidated report for Premise
+        - Output: Reaction, Earliness, and Stability-related information for each approach/fault type/pattern.
+
+### Draw the Consolidated Graph for Prevent-A, Prevent-E, and Premise:
+
+    python draw-graph-consolidated.py
+        - Input:
+            - Consolidated report for Prevent-A
+            - Consolidated report for Prevent-E
+            - Consolidated report for Premise
+        - Output: Consolidated graph
+
+### Draw the ROC Curve for Prevent-A, Prevent-E, and Premise :   
+
+    python draw-roc-curve.py
+        - Input:
+            - Consolidated report for Prevent-A
+            - Consolidated report for Prevent-E
+            - Consolidated report for Premise
+        - Output: ROC curve (Prevent-A vs Prevent-E vs Premise)
+
+<br>
+<br>
+
+
 ## Toolsets and Replication Instructions
 
 <br>
@@ -450,90 +535,6 @@ Premise predicts failures and localizes faults by combining an unsupervised appr
 
 
 <br><br>
-
-
-## RESULTS
-### Folder: Results
-### Summary
-
-This folder contains a set of scripts consolidating andpresenting the final results of the experiments.
-
-### Environment Initialization
-
-    - Prerequisites:
-        - OS: tested on macOS Catalina
-    - Install the packages:
-        python -m pip install -r requirements.txt
-    - Activate the environment:
-        source venv/bin/activate
-
-### Generate consolidated reports:
-
-    Consolidated report for Prevent-A:
-    python create-report-consolidated-prevent.py 0
-        - Input:
-            - Classifications-Prevent-A :: e1:9
-            - Localizations-Loud :: localizations-pairs :: e1:9
-        - Output: Consolidated report for Prevent-A
-
-    Consolidated report for Prevent-E:
-    python create-report-consolidated-prevent.py 1
-        - Input:
-            - Classifications-Prevent-E :: e1:9
-            - Localizations-Loud :: localizations-pairs :: e1:9
-        - Output: Consolidated report for Prevent-E
-
-    Consolidated report for Premise:
-    python create-report-consolidated-premise.py
-        - Input: Classifications-Premise
-        - Output: Consolidated report for Premise
-
-### Calculate/Print FPR for Prevent-A, Prevent-E, and Loud:
-
-    For Prevent-A:
-    python calculate-fpr-normal-data-prevent.py prevent-a normal_w3
-        - Input: Classifications-Prevent-A :: normal_w3
-        - Output: Print FPR
-
-    For Prevent-E:
-    python calculate-fpr-normal-data-prevent.py prevent-e normal_w3
-        - Input: Classifications-Prevent-E :: normal_w3
-        - Output: Print FPR
-
-    For Loud:
-    python calculate-fpr-normal-data-loud.py loud normal_w3
-        - Input: Localizations-Loud :: localizations-nodes :: normal_w3
-        - Output: Print FPR
-
-### Calculate/Print the prediction earliness/stability for Prevent-A, Prevent-E, and Loud:
-
-    python print_earliness_and_stability.py
-        - Input:
-            - Consolidated report for Prevent-A
-            - Consolidated report for Prevent-E
-            - Consolidated report for Premise
-        - Output: Reaction, Earliness, and Stability-related information for each approach/fault type/pattern.
-
-### Draw the Consolidated Graph for Prevent-A, Prevent-E, and Premise:
-
-    python draw-graph-consolidated.py
-        - Input:
-            - Consolidated report for Prevent-A
-            - Consolidated report for Prevent-E
-            - Consolidated report for Premise
-        - Output: Consolidated graph
-
-### Draw the ROC Curve for Prevent-A, Prevent-E, and Premise :   
-
-    python draw-roc-curve.py
-        - Input:
-            - Consolidated report for Prevent-A
-            - Consolidated report for Prevent-E
-            - Consolidated report for Premise
-        - Output: ROC curve (Prevent-A vs Prevent-E vs Premise)
-
-<br>
-<br>
 
 ##  References:
 ---
