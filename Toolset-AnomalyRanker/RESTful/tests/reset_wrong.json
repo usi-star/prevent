@@ -1,0 +1,5 @@
+[
+	{"api": "reset", "scenario": "empty_request", "expected_code": 500},
+	{"api": "reset", "scenario": "wrongkey_request", "expected_code": 500},
+	{"api": "reset", "scenario": "wrongformat_request", "expected_code": 500}
+]

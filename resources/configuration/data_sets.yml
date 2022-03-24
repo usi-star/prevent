@@ -1,0 +1,174 @@
+data_sets:
+
+  normal_w1:  # normal data week-1
+    start_time: 2019.12.10.18.06
+    end_time: 2019.12.17.18.06
+    time_delta: 30
+
+  normal_w2:  # normal data week-2
+    start_time: 2019.12.17.18.06
+    end_time: 2019.12.24.18.06
+    time_delta: 30
+
+  normal_w3:  # normal data week-2
+    start_time: 2019.12.15.18.06
+    end_time: 2019.12.22.18.06
+    time_delta: 30
+
+  normal_w1_2:  # normal data weeks 1-2
+    start_time: 2019.12.10.18.06
+    end_time: 2019.12.24.18.06
+    time_delta: 30
+
+  e1:
+    start_time: 2020.04.08.18.52
+    fault_injection_time: 2020.04.08.20.23
+    failure_time: 2020.04.08.20.57
+    end_time: 2020.04.08.21.22
+
+    time_delta: 30
+    fault_type: memoryleak_expo
+
+    Start_FI: 91
+    FI_Failure: 34
+    Start_Failure: 125
+    Start_End: 150
+
+    Injection_minute: 92
+    Failure_minute: 126
+
+  e2:
+    start_time: 2020.04.08.21.31
+    fault_injection_time: 2020.04.08.23.20
+    failure_time: 2020.04.09.02.27
+    end_time: 2020.04.09.02.31
+
+    time_delta: 30
+    fault_type: memoryleak_linear
+
+    Start_FI: 109
+    FI_Failure: 187
+    Start_Failure: 296
+    Start_End: 300
+
+    Injection_minute: 110
+    Failure_minute: 297
+
+  e3:
+    start_time: 2020.04.09.03.19
+    fault_injection_time: 2020.04.09.04.25
+    failure_time: 2020.04.09.05.05
+    end_time: 2020.04.09.05.19
+
+    time_delta: 30
+    fault_type: memoryleak_random
+
+    Start_FI: 66
+    FI_Failure: 40
+    Start_Failure: 106
+    Start_End: 120
+
+    Injection_minute: 67
+    Failure_minute: 107
+
+  e4:
+    start_time: 2020.04.10.03.12
+    fault_injection_time: 2020.04.10.03.43
+    failure_time: 2020.04.10.04.56
+    end_time: 2020.04.10.05.12
+
+    time_delta: 30
+    fault_type: packetloss_linear
+
+    Start_FI: 31
+    FI_Failure: 73
+    Start_Failure: 104
+    Start_End: 120
+
+    Injection_minute: 32
+    Failure_minute: 105
+
+  e5:
+    start_time: 2020.04.11.10.00
+    fault_injection_time: 2020.04.11.10.54
+    failure_time: 2020.04.11.11.08
+    end_time: 2020.04.11.11.30
+
+    time_delta: 30
+    fault_type: packetloss_expo
+
+    Start_FI: 54
+    FI_Failure: 14
+    Start_Failure: 68
+    Start_End: 90
+
+    Injection_minute: 55
+    Failure_minute: 69
+
+  e6:
+    start_time: 2020.04.11.13.50
+    fault_injection_time: 2020.04.11.14.46
+    failure_time: 2020.04.11.16.01
+    end_time: 2020.04.11.16.20
+
+    time_delta: 30
+    fault_type: packetloss_random
+
+    Start_FI: 56
+    FI_Failure: 75
+    Start_Failure: 131
+    Start_End: 150
+
+    Injection_minute: 57
+    Failure_minute: 132
+
+  e7:
+    start_time: 2020.04.13.01.54
+    fault_injection_time: 2020.04.13.02.27
+    failure_time: 2020.04.13.02.42
+    end_time: 2020.04.13.02.54
+
+    time_delta: 30
+    fault_type: cpuhog_expo
+
+    Start_FI: 33
+    FI_Failure: 15
+    Start_Failure: 48
+    Start_End: 60
+
+    Injection_minute: 34
+    Failure_minute: 49
+
+  e8:
+    start_time: 2020.04.13.03.14
+    fault_injection_time: 2020.04.13.03.56
+    failure_time: 2020.04.13.05.33
+    end_time: 2020.04.13.05.44
+
+    time_delta: 30
+    fault_type: cpuhog_linear
+
+    Start_FI: 42
+    FI_Failure: 97
+    Start_Failure: 139
+    Start_End: 150
+
+    Injection_minute: 43
+    Failure_minute: 140
+
+  e9:
+    start_time: 2020.04.13.16.37
+    fault_injection_time: 2020.04.13.17.32
+    failure_time: 2020.04.13.18.13
+    end_time: 2020.04.13.18.37
+
+    time_delta: 30
+    fault_type: cpuhog_random
+
+    Start_FI: 55
+    FI_Failure: 41
+    Start_Failure: 96
+    Start_End: 120
+
+    Injection_minute: 56
+    Failure_minute: 97

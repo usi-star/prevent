@@ -1,0 +1,13 @@
+# Ignore everything in this directory
+*.pyc
+.ropeproject
+.DS_Store
+.venv
+# caches/
+config
+tags
+intermediate/
+original_data/
+outputs/
+# Except this file
+!.gitignore

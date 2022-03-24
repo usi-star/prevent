@@ -1,0 +1,4 @@
+Cython==0.25.2
+numpy==1.13.1
+python-weka-wrapper3==0.1.2
+javabridge===1.0.14-27-g41bf79b

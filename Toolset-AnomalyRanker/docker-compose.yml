@@ -1,0 +1,10 @@
+version: '3'
+services:
+    predictor-locator:
+      build: .
+      volumes:
+        - ./config:/app/config
+        - ./log:/app/log
+        - ./cached:/app/cached
+      ports: 
+        - "5000:5000"

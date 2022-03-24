@@ -1,0 +1,19 @@
+[
+    ["weka.classifiers.bayes.BayesNet",
+     "-D -Q weka.classifiers.bayes.net.search.local.K2 -- -P 1 -S BAYES -E weka.classifiers.bayes.net.estimate.SimpleEstimator -- -A 0.5"],
+
+    ["weka.classifiers.trees.BFTree",
+     "-S 1 -M 2 -N 5 -C 1.0 -P POSTPRUNED"],
+
+    ["weka.classifiers.bayes.NaiveBayes", ""],
+
+    ["weka.classifiers.functions.SMO",
+     "-C 1.0 -L 0.001 -P 1.0E-12 -N 0 -V -1 -W 1 -K \"weka.classifiers.functions.supportVector.PolyKernel -C 250007 -E 1.0\""],
+
+    ["weka.classifiers.rules.DecisionTable",
+     "-X 1 -S \"weka.attributeSelection.BestFirst -D 1 -N 5\""],
+
+    ["weka.classifiers.trees.LMT", "-I -1 -M 15 -W 0.0"],
+
+    ["weka.classifiers.bayes.HNB", ""]
+]

@@ -1,0 +1,1 @@
+git python-dev python3-pip libblas-dev liblapack-dev libatlas-base-dev gfortran libpython3.6-dev

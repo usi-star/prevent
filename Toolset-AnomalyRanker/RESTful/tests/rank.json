@@ -1,0 +1,3 @@
+[
+	{"api": "rank", "scenario": "normal_request", "expected_code": 200}
+]

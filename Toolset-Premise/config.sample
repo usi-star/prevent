@@ -1,0 +1,42 @@
+[default] 
+debug = true
+nonfaulty_pattern = failurefree
+
+[folder]
+preprocess = original_data
+src = intermediate
+dst = outputs
+meta = meta
+training = overall
+target = longrun
+
+[meta]
+kpi = kpi_list.txt
+
+[component]
+preprocess = true
+predictor = true
+exp_filter = true
+
+[cached]
+kpi_cached = true
+runtime_cached = true
+
+[preprocess]
+targets = overall, longrun
+anomaly_string = SuppressAlarm
+log_file_name = GrangerDetectionALLFw_Sink_FilteredAlarmStreamSink.log
+fault_start= 140921
+
+[predictor]
+sliding_window=18
+fold=10
+
+[exp_filter]
+filter=name_expfilter.NameExpFilter
+anomaly_threshold= 50
+rsc_filter=all
+name_filter=all
+
+[exp_tag]
+tag=typelocation_exptag.TypeLocationExpTag

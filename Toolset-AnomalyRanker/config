@@ -1,0 +1,38 @@
+[default] 
+debug = true
+
+[predictor]
+predictor=ocsvm.OneClassSVM
+stable_prediction = 1
+
+[ranker]
+rankers = authority_ranker.AuthorityRanker, centrality_ranker.CentralityRanker, hub_ranker.HubRanker, nonbk_ranker.NonBkRanker, pagerank_ranker.PageRankRanker
+ranking_top=true
+ranking_size = 20
+
+[ranking_filter]
+filters=rsc_rankingfilter.RscRankingFilter, num_rankingfilter.NumRankingFilter
+rsc_filter_name=CLEARwATER
+num_filter_name=huawei1
+num_filter_threshold=0
+
+[oracle]
+oracle = basic_oracle.BasicOracle
+rank_top = true
+rank_selection = 10
+scale_average_parameter = 1
+
+[restful]
+test_url=http://localhost:5000
+service_port=5000
+predictor=ocsvm.OneClassSVM
+ranker=pagerank_ranker.PageRankRanker
+oracle=basic_oracle.BasicOracle
+cached=true
+cached_dir=cached
+kpi_cached=kpi.txt
+gml_cached=gml.txt
+pred_cached=pred.txt
+log_file=log/rest_log.txt
+logfile_backups = 10
+logfile_size = 10M

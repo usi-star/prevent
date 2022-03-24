@@ -1,0 +1,8 @@
+[
+	{"api": "reset", "scenario": "normal_request", "expected_code": 200},
+	{"api": "update_kpi", "scenario": "normal_request", "expected_code": 200},
+	{"api": "train", "scenario": "normal_request", "expected_code": 200},
+	{"api": "predict", "scenario": "empty_request", "expected_code": 200},
+	{"api": "predict", "scenario": "normal_request", "expected_code": 200},
+	{"api": "predict", "scenario": "faulty_request", "expected_code": 200}
+]

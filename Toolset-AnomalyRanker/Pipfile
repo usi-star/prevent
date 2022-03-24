@@ -1,0 +1,28 @@
+[[source]]
+name = "pypi"
+url = "https://pypi.org/simple"
+verify_ssl = true
+
+[dev-packages]
+
+[packages]
+click = "*"
+networkx = "*"
+numpy = "*"
+requests = "*"
+scikit-learn = "==0.21.2"
+scipy = "*"
+flask = "*"
+jinja2 = "*"
+appdirs = "*"
+decorator = "*"
+itsdangerous = "*"
+markupsafe = "*"
+packaging = "*"
+pyparsing = "*"
+six = "*"
+werkzeug = "*"
+pendulum = "*"
+
+[requires]
+python_version = "3.6"

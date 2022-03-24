@@ -1,0 +1,3 @@
+[
+	{"api": "reset", "scenario": "normal_request", "expected_code": 200}
+]

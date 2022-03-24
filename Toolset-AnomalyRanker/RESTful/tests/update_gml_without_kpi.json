@@ -1,0 +1,4 @@
+[
+	{"api": "reset", "scenario": "normal_request", "expected_code": 200},
+	{"api": "update_gml", "scenario": "normal_request", "expected_code": 500}
+]

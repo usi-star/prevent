@@ -1,0 +1,22 @@
+Tools used to perform this analysis:
+
+Hardware used:
+
+- MacBook Pro, OS: macOS Catalina 10.15.4
+- Processor : 2.7 GHz Quad-Core Intel Core i7
+- RAM : 16 GB 1600 MHz DDR3
+
+Software:
+
+- MatLab R2019b (no exertnal tool/package installed)
+
+- Python 3.7
+
+Libraries used for Python:
+
+- matplotlib.pyplot
+- time (internal)
+- tensorflow.compat.v1
+- numpy
+- os, fnmatch (internal)
+- sys (internal)
