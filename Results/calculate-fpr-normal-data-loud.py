@@ -2,6 +2,10 @@
 Calculates FPR of LOUD on normal data (normal_w3).
 The timestamp is considered anomalous when the same pair of nodes (any pair, not necessarily master/slave pair)
 persists in the top three nodes that LOUD ranks as anomalous for N consecutive timestamps.
+
+- Input: Localizations-Loud :: localizations-nodes :: normal_w3
+- Output: Print FPR
+
 """
 
 import csv

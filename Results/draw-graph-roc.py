@@ -33,8 +33,7 @@ fig.update_layout(
     yaxis_title="True Positive Rate (%)",
     width=800,
     height=800,
-    font=dict(
-        size=20),
+    font=dict(size=20)
 )
 
 for project_index, project in enumerate(experiments):
@@ -49,7 +48,7 @@ for project_index, project in enumerate(experiments):
     circum_color = circum_colors_by_project[project_index]
     circum_size = circum_sizes_by_project[project_index]
 
-    print("\n", project_name, "\n")
+    # print("\n", project_name, "\n")
 
     exp_codes_to_draw = []
     fprs = []
@@ -68,7 +67,7 @@ for project_index, project in enumerate(experiments):
         for row in reader:
             matrix.append(row)
 
-        print("Exp FPR/TPR:", exp_code, matrix[len(matrix)-1][11], matrix[len(matrix)-1][10])
+        # print("Exp FPR/TPR:", exp_code, matrix[len(matrix)-1][11], matrix[len(matrix)-1][10])
         fprs.append(int(matrix[len(matrix)-1][11]))
         tprs.append(int(matrix[len(matrix)-1][10]))
 

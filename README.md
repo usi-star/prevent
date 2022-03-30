@@ -219,85 +219,75 @@ The experiments compare:
 ### Folder: Results
 ### Summary
 
-This folder contains a set of scripts consolidating andpresenting the final results of the experiments.
+> This folder contains a set of scripts consolidating and presenting the final results of the experiments.
 
-### Environment Initialization
+### Prerequisites:
+- OS: tested on macOS Catalina
+- Python version=3.7
+- Pip version=22.0.4
 
-    - Prerequisites:
-        - OS: tested on macOS Catalina
-    - Install the packages:
-        python -m pip install -r requirements.txt
-    - Activate the environment:
-        source venv/bin/activate
+### Environment
+    
+    # Activate the environment
+    source venv/bin/activate
 
-### Generate consolidated reports:
+    # Install the packages
+    python -m pip install -r requirements.txt
 
-    Consolidated report for Prevent-A:
-    python create-report-consolidated-prevent.py 0
-        - Input:
-            - Classifications-Prevent-A :: e1:9
-            - Localizations-Loud :: localizations-pairs :: e1:9
-        - Output: Consolidated report for Prevent-A
+<br>
 
-    Consolidated report for Prevent-E:
-    python create-report-consolidated-prevent.py 1
-        - Input:
-            - Classifications-Prevent-E :: e1:9
-            - Localizations-Loud :: localizations-pairs :: e1:9
-        - Output: Consolidated report for Prevent-E
+### 1. Calculate False Positive Rate of predictions for Prevent-A, Prevent-E, and Loud (Table 3 of the paper)
 
-    Consolidated report for Premise:
-    python create-report-consolidated-premise.py
-        - Input: Classifications-Premise
-        - Output: Consolidated report for Premise
+    python results_fpr.py
 
-### Calculate/Print FPR for Prevent-A, Prevent-E, and Loud:
+- Input:
+    - Dataset: Classifications-Prevent-A :: normal_w3
+    - Dataset: Classifications-Prevent-E :: normal_w3
+    - Localizations-Loud :: normal_w3
+- Output: False Positive Rates for Prevent-A, Prevent-E, and Loud
 
-    For Prevent-A:
-    python calculate-fpr-normal-data-prevent.py prevent-a normal_w3
-        - Input: Classifications-Prevent-A :: normal_w3
-        - Output: Print FPR
+<br>
 
-    For Prevent-E:
-    python calculate-fpr-normal-data-prevent.py prevent-e normal_w3
-        - Input: Classifications-Prevent-E :: normal_w3
-        - Output: Print FPR
+### 2. Calculate Earliness and Stability of prediction for Prevent-A, Prevent-E, and Loud (Tables 4, 5, 6 of the paper)
 
-    For Loud:
-    python calculate-fpr-normal-data-loud.py loud normal_w3
-        - Input: Localizations-Loud :: localizations-nodes :: normal_w3
-        - Output: Print FPR
+    python results_earliness_stability.py
 
-### Calculate/Print the prediction earliness/stability for Prevent-A, Prevent-E, and Loud:
+- Input:
+    - Dataset: Classifications-Prevent-A :: e1:9
+    - Dataset: Classifications-Prevent-E :: e1:9
+    - Dataset: Localizations-Loud :: e1:9
+    - Dataset: Classifications-Premise
+- Output: Prediction earliness and stability related information for Prevent-A, Prevent-E, and Premise
 
-    python print_earliness_and_stability.py
-        - Input:
-            - Consolidated report for Prevent-A
-            - Consolidated report for Prevent-E
-            - Consolidated report for Premise
-        - Output: Reaction, Earliness, and Stability-related information for each approach/fault type/pattern.
+<br>
 
-### Draw the Consolidated Graph for Prevent-A, Prevent-E, and Premise:
+### 3. Draw the Predictions graph for Prevent-A, Prevent-E, and Premise (Figures 6, 7, 8 of the paper)
 
-    python draw-graph-consolidated.py
-        - Input:
-            - Consolidated report for Prevent-A
-            - Consolidated report for Prevent-E
-            - Consolidated report for Premise
-        - Output: Consolidated graph
+    python results_graph_predictions.py
 
-### Draw the ROC Curve for Prevent-A, Prevent-E, and Premise :   
+- Input:
+    - Dataset: Classifications-Prevent-A :: e1:9
+    - Dataset: Classifications-Prevent-E :: e1:9
+    - Dataset: Localizations-Loud :: localizations-pairs :: e1:9
+    - Dataset: Classifications-Premise
+- Output: Predictions graph for Prevent-A, Prevent-E, and Premise
 
-    python draw-roc-curve.py
-        - Input:
-            - Consolidated report for Prevent-A
-            - Consolidated report for Prevent-E
-            - Consolidated report for Premise
-        - Output: ROC curve (Prevent-A vs Prevent-E vs Premise)
+<br>
+
+### 4. Draw the ROC curve for Prevent-A, Prevent-E, and Premise (Figure 9 of the paper)
+
+    python results_graph_roc.py
+
+- Input:
+    - Dataset: Classifications-Prevent-A :: e1:9
+    - Dataset: Classifications-Prevent-E :: e1:9
+    - Dataset: Localizations-Loud :: localizations-pairs :: e1:9
+    - Dataset: Classifications-Premise
+- Output: ROC curve for Prevent-A, Prevent-E, and Premise
+
 
 <br>
 <br>
-
 
 ## Toolsets and Replication Instructions
 
@@ -318,26 +308,28 @@ This folder contains a set of scripts consolidating andpresenting the final resu
 <br>
 
 #### Summary
-Prevent-E trains RBM (Restricted Bolzman Machine) model and exploits it to classify each data sample (set of KPIs) observed at regular time intervals in production. It exploit a Gibbs free energy which grows when increasingly large subsets of KPIs align their states to correlated anomalous values. The higher the computed energy, the higher the likelihood of some system anomaly that manifests as anomalous values of increasing sets of correlated KPIs. Prevent-E classifies samples as anomalous when the energy values observed at runtime exceed some threshold values computed by training the network with data collected during normal execution.
+> Prevent-E trains RBM (Restricted Bolzman Machine) model and exploits it to classify each data sample (set of KPIs) observed at regular time intervals in production. It exploit a Gibbs free energy which grows when increasingly large subsets of KPIs align their states to correlated anomalous values. The higher the computed energy, the higher the likelihood of some system anomaly that manifests as anomalous values of increasing sets of correlated KPIs. Prevent-E classifies samples as anomalous when the energy values observed at runtime exceed some threshold values computed by training the network with data collected during normal execution.
 
+<br>
 
-#### Environment Initialization
-    
-- Prerequisites:
-    - OS: tested on macOS Catalina
+#### Prerequisites:
+- OS: tested on macOS Catalina
+
+<br>
 
 #### Train & Predict
 
     Execute the main.m script in Matlab
-        - Input data
-            - for training:
-                - Datasets-Raw-Splitted -> normal_w1_2
-            - for prediction:
-                - Datasets-Raw-Splitted :: e1:9
-                - Datasets-Raw-Splitted :: normal_w3
-        - Output data (state classifictions)
-            - Classifications-Prevent-E :: e1:9 (MA 2/3)
-            - Classifications-Prevent-E :: normal_w3
+
+- Input:
+    - for training:
+        - Datasets-Raw-Splitted -> normal_w1_2
+    - for prediction:
+        - Datasets-Raw-Splitted :: e1:9
+        - Datasets-Raw-Splitted :: normal_w3
+- Output:
+    - Classifications-Prevent-E :: e1:9 (MA 2/3)
+    - Classifications-Prevent-E :: normal_w3
 
 
 <br><br>
@@ -345,18 +337,28 @@ Prevent-E trains RBM (Restricted Bolzman Machine) model and exploits it to class
 ### Toolset: Anomaly Ranker
 #### Project folder: Toolset-AnomalyRanker
 
+<br>
+
 #### Summary
 
-Anomaly Ranker exploits anomalous KPIs, that is, KPIs with values that signiﬁcantly differ from values observed during training in normal execution conditions, for ranking anomalous nodes according to their relevance with respect to the anomalous KPIs. Anomaly Ranker returns a list of anomalous nodes ranked by anomaly relevance, list that the Anomaly ranker produces in the presence of anomalous states inferred with the State classiﬁer. The anomalous states correlate with incoming failures, and the anomalous nodes indicate the more likely nodes that will lead to failure.
+> Anomaly Ranker exploits anomalous KPIs, that is, KPIs with values that signiﬁcantly differ from values observed during training in normal execution conditions, for ranking anomalous nodes according to their relevance with respect to the anomalous KPIs. Anomaly Ranker returns a list of anomalous nodes ranked by anomaly relevance, list that the Anomaly ranker produces in the presence of anomalous states inferred with the State classiﬁer. The anomalous states correlate with incoming failures, and the anomalous nodes indicate the more likely nodes that will lead to failure.
 
-#### Environment Initialization
+<br>
 
-    - Prerequisites:
-        - OS: tested on macos Catalina
-    - Install the packages:
-        python -m pip install -r requirements.txt
-    - Activate the environemnt:
-        source venv/bin/activate
+#### Prerequisites:
+- OS: tested on macos Catalina
+
+<br>
+
+### Environment
+    
+    # Activate the environment
+    - source venv/bin/activate
+
+    # Install the packages
+    python -m pip install -r requirements.txt
+
+<br>
 
 #### Start the Anomaly Ranker server:
 
@@ -368,169 +370,244 @@ Anomaly Ranker exploits anomalous KPIs, that is, KPIs with values that signiﬁc
 ### Toolset: Prevent-A
 #### Project folder: Toolset-Prevent-A
 
+<br>
+
 #### Summary
 
-Prevent-A State classiﬁer predicts failures by combining a deep autoencoder with a one-class-support-vector-machine (OCSVM) classiﬁer. The deep autoencoder model identiﬁes anomalous KPIs as KPIs with values that are anomalous with respect to the observations when training with normal executions. The OCSVM classiﬁer discriminates between benign sets of anomalies (which resemble combinations of anomalies occasionally observed during training) and failureprone sets of anomalies (which signiﬁcantly differ form the observations during training).
+> Prevent-A State classiﬁer predicts failures by combining a deep autoencoder with a one-class-support-vector-machine (OCSVM) classiﬁer. The deep autoencoder model identiﬁes anomalous KPIs as KPIs with values that are anomalous with respect to the observations when training with normal executions. The OCSVM classiﬁer discriminates between benign sets of anomalies (which resemble combinations of anomalies occasionally observed during training) and failureprone sets of anomalies (which signiﬁcantly differ form the observations during training).
 
-#### Environment Initialization:
+<br>
 
-    - Prerequisites:
-        - OS: tested on macOS Catalina
-    - Install the packages:
-        python -m pip install -r requirements.txt
-    - Activate the environment:
-        source venv/bin/activate
+#### Prerequisites:
+- OS: tested on macos Catalina
 
-#### Setup the Anomaly Ranker server:
+<br>
 
-    - Update KPI list:
-        8-Kpi-Update.ipynb
+#### Environment
+    
+    # Activate the environment
+    - source venv/bin/activate
 
-    - Build and update the Granger Causality Graph:
-        8-GCG-Build-Update.ipynb
-            - Input: Datasets-Raw :: normal_w1_2
-            - Output: Granger Causality graph
+    # Install the packages
+    python -m pip install -r requirements.txt
 
+<br>
 
-#### Train the Deep Autoencoder model:
+#### Update KPI list of the Anomaly Ranker server
+    8-Kpi-Update.ipynb
+
+<br>
+
+#### Build Granger Causality Graph and set it to the Anomaly Ranker server
+    8-GCG-Build-Update.ipynb
+
+- Input: Datasets-Raw :: normal_w1_2
+- Output: Granger Causality graph
+
+<br>
+
+#### Train the Deep Autoencoder model
     python ad_train.py
-        - Input: Datasets-Raw-Splitted :: normal_w1
-        - Output: Deep Autoencoder model
 
-#### Detect anomalies on normal data:
+- Input: Datasets-Raw-Splitted :: normal_w1
+- Output: Deep Autoencoder model
+
+<br>
+
+#### Detect anomalies on normal data
     python ad_detect.py
-        - Input: Datasets-Raw-Splitted :: normal_w2
-        - Output: Anomalies :: normal_w2
 
-#### Train the OCSVM Classifier model:
+- Input: Datasets-Raw-Splitted :: normal_w2
+- Output: Anomalies :: normal_w2
+
+<br>
+
+#### Train the OCSVM Classifier model
+
     python fp_train.py 5000
-        - Input: Anomalies :: normal_w2
-        - Output: OCSVM Classifier model
 
-#### Detect anomalies:
+- Input: Anomalies :: normal_w2
+- Output: OCSVM Classifier model
+
+<br>
+
+#### Detect anomalies
 
     python ad_detect.py
-        - Input: 
-            - Datasets-Raw-Splitted :: e1:9
-            - Datasets-Raw-Splitted :: normal_w3
-        - Output:
-            - Anomalies :: e1:9
-            - Anomalies :: normal_w3
 
-#### Classify anomalies:
+- Input: 
+    - Datasets-Raw-Splitted :: e1:9
+    - Datasets-Raw-Splitted :: normal_w3
+- Output:
+    - Anomalies :: e1:9
+    - Anomalies :: normal_w3
 
-    On anomalous data:
+<br>
+
+#### Classify anomalies on anomalous data
+
     fp_predict.py 5000
-        - Input: Anomalies :: e1:9
-        - Output: Classifications-Prevent-A :: e1:9
 
-    On normal data:
+- Input: Anomalies :: e1:9
+- Output: Classifications-Prevent-A :: e1:9
+
+<br>
+
+#### Classify anomalies on normal data:
+
     fp_predict_on_normal.py 5000
-        - Input: Anomalies :: normal_w3 (json)
-        - Output: Classifications-Prevent-A :: normal_w3 (json)
 
-#### Convert Prevent-A predictions from json to csv:
+- Input: Anomalies :: normal_w3 (json)
+- Output: Classifications-Prevent-A :: normal_w3 (json)
+
+<br>
+
+#### Convert Prevent-A predictions from json to csv
     
     python convert-predictions-json-to-csv-prevent.py
-        - Input:
-            - Classifications-Prevent-A :: e1:9 (json)
-            - Classifications-Prevent-A :: normal_w3 (json)
-        - Output:
-            - Classifications-Prevent-A :: e1:9
-            - Classifications-Prevent-A :: normal_w3
 
-#### Rank anomalous KPIs and Localize the nodes:
+- Input:
+    - Classifications-Prevent-A :: e1:9 (json)
+    - Classifications-Prevent-A :: normal_w3 (json)
+- Output:
+    - Classifications-Prevent-A :: e1:9
+    - Classifications-Prevent-A :: normal_w3
+
+<br>
+
+#### Rank anomalous KPIs and Localize the nodes
+
     python rank.py
-        - Input:
-            - Anomalies :: normal_w3
-            - Anomalies :: e1:9
-        - Output: 
-            - Localizations-Loud :: localizations-nodes :: normal_w3
-            - Localizations-Loud :: localizations-nodes :: e1:9
+
+- Input:
+    - Anomalies :: normal_w3
+    - Anomalies :: e1:9
+- Output: 
+    - Localizations-Loud :: localizations-nodes :: normal_w3
+    - Localizations-Loud :: localizations-nodes :: e1:9
 
 <br><br>
 
 ### Toolset: Premise Preprocessor
 #### Folder: Preprocessor-Premise
 
+<br>
+
 #### Summary
-This toolset is used to prepare an input data for processing by Premise.
+> This toolset is used to prepare an input data for processing by Premise.
 
-#### Environment Initialization
+<br>
 
-    - Prerequisites:
-        - OS: tested on macOS Catalina
-    - Install the packages:
-        python -m pip install -r requirements.txt
-    - Activate the environment:
-        source venv/bin/activate
+#### Prerequisites:
+- OS: tested on macos Catalina
 
-#### Convert anomalies from .json to .csv format.
+<br>
+
+#### Environment
+    
+    # Activate the environment
+    - source venv/bin/activate
+
+    # Install the packages
+    python -m pip install -r requirements.txt
+
+<br>
+
+#### Convert anomalies from .json to .csv format
 
     python convert-anomalies-json-to-csv.py
-        - Input data: resources/data/1-anomalies-in-json (Anomalies :: e1:9)
-        - Ouput data: AnomalyRanker:converted_files (Anomalies-CSV :: e1:9)
 
-    
+- Input data: resources/data/1-anomalies-in-json (Anomalies :: e1:9)
+- Ouput data: AnomalyRanker:converted_files (Anomalies-CSV :: e1:9)
+
+<br>
+
 #### Shuffle data
 
-Shuffle the faulty node-pairs in the anomalous datasets (change the same faulty data between the node pairs). One data set for each fault-type/node-pair combination.
+##### Shuffle the faulty node-pairs in the anomalous datasets (change the same faulty data between the node pairs). One data set for each fault-type/node-pair combination.
 
     python change-pairs-headers.py
-        - Input data: Anomalies-CSV :: e1:9
-        - Output data: Anomalies-CSV :: e1:9 (Shuffled)
-    
+
+- Input data: Anomalies-CSV :: e1:9
+- Output data: Anomalies-CSV :: e1:9 (Shuffled)
+
+<br>
+
 #### Create training and test datasets
 
     python create-premise-data-sets.py
-        - Input: Anomalies-CSV :: e1:9 (Shuffled)
-        - Output: Anomalies-Premise
 
-#### Copy anomalies to the Premise toolset input folder:
+- Input: Anomalies-CSV :: e1:9 (Shuffled)
+- Output: Anomalies-Premise
 
-    - From: Anomalies-Premise
-    - To: Toolset-Premise/data
+<br>
+
+#### Copy anomalies to the Premise toolset input folder
+
+- From: Anomalies-Premise
+- To: Toolset-Premise/data
+
 
 <br><br>
 
 ### Toolset: Premise
 #### Project folder: Toolset-Premise
+
+<br>
+
 #### Summary
 
-Premise predicts failures and localizes faults by combining an unsupervised approach for detecting anomalous KPIs with a signature-based approach for predicting failures. It gets sets of anomalous KPIs produced by the deep autoencoder as an input and produces sets of state classifications for each observed data sample with indication of the type and the source of failure (node of the cluster).
+> Premise predicts failures and localizes faults by combining an unsupervised approach for detecting anomalous KPIs with a signature-based approach for predicting failures. It gets sets of anomalous KPIs produced by the deep autoencoder as an input and produces sets of state classifications for each observed data sample with indication of the type and the source of failure (node of the cluster).
+
+<br>
+
+#### Prerequisites:
+- OS: tested on Ubuntu 20
+
+<br>
 
 #### Environment Initialization
     
-    - Prerequisites:
-        - OS: tested on Ubuntu 20
-    - Install the packages:
-        python -m pip install -r requirements.txt
-    - Activate the environment:
-        source venv/bin/activate
+    # Activate the environment
+    source venv/bin/activate
+    # Install the packages
+    python -m pip install -r requirements.txt
 
-#### Train models
+<br>
 
-    Train the Model-0:
+#### Train Model-0
+
     python run.py train LMT-1_2_3_4_6 1
-        - Input: Anomalies-Premise
-        - Output: Premise-Model-0
 
-    Train the Model-1:
+- Input: Anomalies-Premise
+- Output: Premise-Model-0
+
+<br>
+
+#### Train Model-1
+
     python run.py train LMT-7_8_9_10 1
-        - Input: Anomalies-Premise
-        - Output: Premise-Model-1
 
-#### Make classifications
+- Input: Anomalies-Premise
+- Output: Premise-Model-1
 
-    Model-0 classifications:
+<br>
+
+#### Make classifications using Model-0
+
     python run.py predict LMT-1_2_3_4_6 1
-        - Input: Anomalies-Premise
-        - Output: Classifications-Premise-0
 
-    Model-1 classifications:
+- Input: Anomalies-Premise
+- Output: Classifications-Premise-0
+
+<br>
+
+#### Make classifications using Model-1
+
     python run.py predict LMT-7_8_9_10 1
-        - Input: Anomalies-Premise-1
-        - Output: Classifications-Premise-1
+
+- Input: Anomalies-Premise-1
+- Output: Classifications-Premise-1
 
 
 

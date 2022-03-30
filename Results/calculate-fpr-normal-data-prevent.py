@@ -1,8 +1,15 @@
 """
 Calculates FPR of Prevent-A and Prevent-E on normal data (normal_w3).
-The timestamp is considered anomalous if it is classified by the Prevent Classifier (OCSVM of Prevent-A or RBM of Prevent-E) as anomalous.
+The timestamp is considered anomalous if it is classified by Prevent Classifier (OCSVM of Prevent-A or RBM of Prevent-E) as anomalous.
 This scripts gets all the classifications from a single file with predictions (0 - negative, 1 - positive) and calculates
 the rate of positive classifications.
+
+For prevent-A:
+	- Input: Classifications-Prevent-A :: normal_w3
+	- Output: Print FPR
+ For prevent-E:
+	- Input: Classifications-Prevent-E :: normal_w3
+	- Output: Print FPR
 """
 
 import csv

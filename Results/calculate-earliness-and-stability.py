@@ -1,5 +1,6 @@
 import csv
 import yaml as yaml
+from tabulate import tabulate
 
 
 # **** Paths
@@ -20,9 +21,7 @@ faults = ["CPU Hog : Random", "CPU Hog : Exponential", "CPU Hog : Linear", "Pack
 
 for project in projects:
 
-    print("Approach:", project)
-    print("Columns: Failure, Pattern, Injection (minutes), Reaction (minutes), Earliness (minutes), Stability (%)")
-    print()
+    table_rows = []
 
     for exp_index, exp_code in enumerate(exp_codes):
 
@@ -44,5 +43,10 @@ for project in projects:
             reaction = "-"
             stability = "N/A"
 
-        print(" -", faults[exp_index], ":", injection_failure_duration, ":", reaction, ":", earliness, ":", stability)
-    print()
+        # print(" -", faults[exp_index], ":", injection_failure_duration, ":", reaction, ":", earliness, ":", stability)
+
+        table_rows.append([faults[exp_index], injection_failure_duration, reaction, earliness, stability])
+
+    table = tabulate(table_rows, headers=['Failure : Pattern', 'Injection \n (minutes before failure)', 'Reaction \n (minutes before failure)', 'Earliness \n (minutes before failure)', 'TPR (%)'], tablefmt='orgtbl')
+    print("\nPrediction earliness and stability (TPR) for", project, "\n")
+    print(table)

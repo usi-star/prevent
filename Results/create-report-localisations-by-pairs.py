@@ -4,7 +4,6 @@ import csv
 # **** Input
 faulty_master = "redis-14"
 faulty_slave = "redis-3"
-rank_selection = 325
 experiment_data_set_codes = ["e1", "e2", "e3", "e4", "e5", "e7", "e8", "e9"]
 cluster_node_pairs_string = 'redis-14 redis-3, redis-12 redis-1, redis-5 redis-16, redis-18 redis-7, redis-4 redis-15, redis-9 redis-20, redis-8 redis-19, redis-6 redis-17, redis-10 redis-11, redis-2 redis-13'
 
@@ -22,10 +21,10 @@ def get_pair_id(resource, pairs):
 # **** Parameters
 root_folder = "../"
 
-# Input: Localisations by nodes (raw localisations - initial output of the Anomaly Ranker)
+# Input: Localisations - output of the Anomaly Ranker
 localisations_by_nodes = root_folder + "resources/data/loud/localisations-nodes/{exp_code}.csv"
 
-# Output: Localisations by the node pairs - needed for the generation of the consolidated report (which is in its turn is used for drawing the consolidated graph)
+# Output: Localisations by the node pairs - needed for the generation of the consolidated reports (which is in its turn is used for drawing the consolidated graph)
 localisations_by_pairs = root_folder + "resources/data/loud/localisations-pairs/{exp_code}.csv"
 
 

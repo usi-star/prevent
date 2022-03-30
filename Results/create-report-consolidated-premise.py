@@ -1,3 +1,12 @@
+"""
+Generate the consolidated report for premise
+
+- Input:
+    - Classifications-Premise
+- Output:
+    - Consolidated report for Premise
+"""
+
 import csv
 import os
 import yaml as yaml
@@ -99,7 +108,7 @@ for model in models:
             sets_fault_index = int(faults.index(sets_fault_string.replace("@", "-")))
             sets_node_pair = int(name.split("-")[2].split("_")[1])
 
-            print("Fault injection session data:", name, sets_id, sets_fault_index, sets_node_pair)
+            # print("Fault injection session data:", name, sets_id, sets_fault_index, sets_node_pair)
 
             exp_fault_inj_minute = fault_injection_minutes[sets_fault_index]
             steady_period_before_injection = periods_before_injection[sets_fault_index]
@@ -257,4 +266,6 @@ for model in models:
 
             predictions_writer.writerow(
                 ["", "", "", "", "", "", "", "", minute_of_first_tp, TTF, T_TPR, FPR, prediction_types_rates])
-            print(faults[sets_fault_index], ":", [minute_of_first_tp, TTF, T_TPR, FPR], len(out_csv_lines))
+            # print(faults[sets_fault_index], ":", [minute_of_first_tp, TTF, T_TPR, FPR], len(out_csv_lines))
+
+print("Consolidated report created for the project:", "premise")

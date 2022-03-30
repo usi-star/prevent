@@ -133,7 +133,7 @@ for project_index, project in enumerate(experiments):
             print(project_name, exp_code, period_before_injection, failure_minute, fault_inj_minute, target_period_len)
             exit("target period is not correct")
 
-        print(project_name, exp_code, fault_inj_minute, failure_minute)
+        # print(project_name, exp_code, fault_inj_minute, failure_minute)
 
         # Point before start of the target period
         start_minute_for_point_on_graph = target_period_len + 1

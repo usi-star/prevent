@@ -1,3 +1,20 @@
+"""
+Generate the consolidated report for prevent (-A, -E)
+
+prevent-A:
+    - Input:
+        - Classifications-Prevent-A :: e1:9
+        - Localizations-Loud :: localizations-pairs :: e1:9
+    - Output:
+        - Consolidated report for Prevent-A
+
+- Input:
+    - Classifications-Prevent-E :: e1:9
+    - Localizations-Loud :: localizations-pairs :: e1:9
+- Output:
+    - Consolidated report for Prevent-E
+"""
+
 import csv
 import sys
 import yaml as yaml
@@ -17,7 +34,6 @@ file_path_consolidated_report_pattern = root_folder + "resources/data/{project_n
 # ******************************************************************************************* Inputs
 
 project_index = int(sys.argv[1])
-rank_selection = 325
 
 # ******************************************************************************************* PARAMETERS
 
@@ -101,7 +117,7 @@ for exp_index, exp_code in enumerate(project_exp_codes):
     exp_failure_minute = project_failure_minutes[exp_index]
     faulty_period_duration = (exp_failure_minute - 1) - (exp_fault_inj_minute - 1)
 
-    print(exp_code, ":", steady_period_before_injection, last_minute_of_non_steady_period, exp_fault_inj_minute, exp_failure_minute, faulty_period_duration)
+    # print(exp_code, ":", steady_period_before_injection, last_minute_of_non_steady_period, exp_fault_inj_minute, exp_failure_minute, faulty_period_duration)
 
     # Number of False Positives
     FP_Number = 0
@@ -173,7 +189,7 @@ for exp_index, exp_code in enumerate(project_exp_codes):
         # Get localisation type
         # current_localisation_type = : 0 - neither faulty node localised, 1 - 1 of the faulty nodes localised, 2 - both faulty nodes localised
         index_in_localisation_vector = time_point - last_minute_of_non_steady_period - 1
-        print(exp_code, ":", time_point, last_minute_of_non_steady_period, index_in_localisation_vector)
+        # print(exp_code, ":", time_point, last_minute_of_non_steady_period, index_in_localisation_vector)
         localisation_vector = localisations_matrix[index_in_localisation_vector]
         current_localisation_type = determine_localisation_type(localisation_vector)
 
@@ -264,4 +280,6 @@ for exp_index, exp_code in enumerate(project_exp_codes):
         predictions_writer.writerow(prediction_line)
 
     predictions_writer.writerow(["", "", "", "", "", "", "", "", minute_of_first_tp, TTF, T_TPR, FPR, prediction_types_rates])
-    print(faults[exp_code - 1], ":", [minute_of_first_tp, TTF, T_TPR, FPR])
+    # print(faults[exp_code - 1], ":", [minute_of_first_tp, TTF, T_TPR, FPR])
+
+print("Consolidated report created for the project:", experiments[project_index]["project"])
