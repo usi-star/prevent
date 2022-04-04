@@ -26,7 +26,7 @@ class OneClassSVM(GeneralPredictor):
         Returns:
             None
         """
-        # print("cls.predictor.fit")
+        print("cls.predictor.fit")
         cls.predictor.fit(data)
 
     @classmethod

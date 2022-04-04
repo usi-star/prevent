@@ -41,7 +41,7 @@ if (exist(finalDataDir, 'dir') ~= 7)
 end
 
 % Directory in which raw data is stored
-rawDirectory = "./Data/Raw_Data/";
+rawDirectory = "../resources/data/Datasets-Raw-Splitted/";
 
 % Directory in which store the final result,
 % divided into two different directories:

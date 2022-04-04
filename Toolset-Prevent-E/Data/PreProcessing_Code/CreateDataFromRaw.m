@@ -1,7 +1,7 @@
 function realNumberofKPIs = CreateDataFromRaw(nKPI, rawDirectory, finalDataDir, preProc, eliminateStringColumn, debug)
     %% Defining parameters for the data creation phase
 
-    normalDir = rawDirectory + "training_dataset";
+    normalDir = rawDirectory + "normal_w1_2";
     anomalousDir = rawDirectory;
     allowedAnomalousDir = ["e1", "e2", "e3", "e4", "e5", "e6", "e7", "e8", "e9", "normal_w3"];
 

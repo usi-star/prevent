@@ -19,10 +19,7 @@ def format_input_single(anomalies):
         that the KPI at that index is anomalous. If the format is not correct,
         then None.
     """
-
-    # TODO: added 1 just because of strange warning that the input size to be 1721 (why not 1720?) as in training
-    # size = len(kpi_info.kpi_list)
-    size = len(kpi_info.kpi_list) + 1
+    size = len(kpi_info.kpi_list)
 
     if not isinstance(anomalies, list):
         localizer_log.warning("Anomalies are not organized as a list.")

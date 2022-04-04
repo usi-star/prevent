@@ -14,9 +14,11 @@ import sys
 import pickle
 import time
 import csv
+
 import numpy as np
 from flask import Flask, request, jsonify, abort
 from sklearn import svm
+
 import RESTful.predict_api as predict_api
 import util.kpi_info as kpi_info
 import util.causality_graph as causality_graph
@@ -26,9 +28,7 @@ from util.localizer_config import config
 import networkx as nx
 from joblib import dump, load
 
-app = Flask(__name__)
-
-# *******************************************************************
+import utils_clustering
 
 THIS_DIRECTORY_PATH = os.path.dirname(os.path.abspath(__file__))
 
@@ -58,15 +58,9 @@ __pred_cachefile = os.path.join(__cache_folder, 'predictor.cache')
 
 __nu = 0.1
 __gamma = 0.1
-gml_init_required = True
 
 __rest_cached = config.getboolean('restful', 'cached')
 if __rest_cached:
-
-    print("Cache files:")
-    print("Default KPI list cache:", __kpi_cachefile)
-    print("Default GML model cache:", __gml_cachefile)
-    print("Default Predictor model cache:", __pred_cachefile)
 
     if os.path.exists(__kpi_cachefile):
         localizer_log.stdout("Read KPI list from cache..")
@@ -74,38 +68,29 @@ if __rest_cached:
             kpi_info.initialize(pickle.load(f))
             kpi_initialized = True
 
-    headers = [(gcd.resource + "_" + gcd.metric) for gcd in kpi_info.kpi_list]
+    # print("\nKPIs List from the saved kpi_info.kpi_list:\n")
+    # for ii in range(len(kpi_info.kpi_list)):
+    #    print(kpi_info.kpi_list[ii])
 
-    print("KPI List:", len(headers), "elements.")
-    input("Press ENTER to proceed.")
-    print(headers)
-    input("Press ENTER to proceed.")
+    if os.path.exists(__gml_cachefile):
+        localizer_log.stdout("Read GML model from cache..")
 
-    if gml_init_required:
-        if os.path.exists(__gml_cachefile):
-            localizer_log.stdout("Read GML model from cache..")
-
-            with open(__gml_cachefile, 'rb') as f:
-                print("Start reading causality graph.")
-                causality_graph.read(pickle.load(f))
-                gml_initialized = True
-                print("Causality graph reading completed.")
-        else:
-            input("__gml_cachefile does not exist")
+        with open(__gml_cachefile, 'rb') as f:
+            causality_graph.read(pickle.load(f))
+            gml_initialized = True
 
     full_matrix_cache = causality_graph.get_weighted_matrix()
+    # print("\n Full matrix cache:\n")
+    # for ii in range(len(full_matrix_cache)):
+    #    print(full_matrix_cache[ii])
 
     if os.path.exists(__pred_cachefile):
-        localizer_log.stdout("Read Default Predictor model from cache: " + __pred_cachefile)
+        localizer_log.stdout("Read Predictor model from cache: " + __pred_cachefile)
         with open(__pred_cachefile, 'rb') as f:
             __predictor = pickle.load(f)
             trained = True
-    else:
-        input("__pred_cachefile does not exist")
 
-    input("Initialization completed.")
-
-# *******************************************************************
+app = Flask(__name__)
 
 
 @app.route('/reset', methods=['POST'])
@@ -233,23 +218,8 @@ def set_fp_model_training_params():
 
 @app.route('/set_pred_model')
 def set_pred_model():
-
-    global __predictor
-    global trained
     global __pred_cachefile
-
     __pred_cachefile = os.path.join(__cache_folder, 'predictor_' + request.args.get('model_code') + '.cache')
-
-    print("\nSet predictor model cache:", 'predictor_' + request.args.get('model_code') + '.cache')
-
-    if os.path.exists(__pred_cachefile):
-        with open(__pred_cachefile, 'rb') as fl:
-            print("Reading Predictor model from cache: ", __pred_cachefile)
-            __predictor = pickle.load(fl)
-            trained = True
-    else:
-        localizer_log.warning("Predictor model could not be found in " + __pred_cachefile)
-        return 'Model not found', 501
 
     return 'Succeed', 200
 
@@ -260,6 +230,8 @@ def convert_anomalies():
     global kpi_initialized
 
     headers = ["timestamp"] + [(gcd.resource + "_" + gcd.metric) for gcd in kpi_info.kpi_list] + ["class"]
+    # for kpi in headers:
+    #     input(kpi)
 
     localizer_log.stdout("Received convert request.")
 
@@ -283,9 +255,13 @@ def convert_anomalies():
         localizer_log.warning("Cannot convert without initialized KPI list")
         return 'KPI list not initialized', 500
 
-    output_file = "converted_files/" + anomalies_file_name + ".csv"
+    output_file = "../resources/data/premise/anomalies/" + anomalies_file_name + ".csv"
+
+    # return 'EXIT', 800
 
     valid, inputs = predict_api.format_input_list_for_convert(data, fault_injection_timestamp, failure_timestamp, fault_class_name)
+
+    print("len inputs", len(inputs))
 
     if len(inputs) <= 0:
         localizer_log.warning("Data should have at least one set of anomalies")
@@ -342,21 +318,18 @@ def train():
             localizer_log.warning("Training data should have at least one set of anomalies")
         elif valid:
 
-            # localizer_log.stdout("Training started: nu: " + str(__nu) + ", kernel: rbf, gamma:" + str(__gamma))
+            localizer_log.stdout("Training started: nu: " + str(__nu) + ", kernel: rbf, gamma:" + str(__gamma))
 
-            # if not (__gamma == "auto") and not (__gamma == "scale"):
-            #     gamma = float(__gamma)
-            # else:
-            #     gamma = __gamma
+            if not (__gamma == "auto") and not (__gamma == "scale"):
+                gamma = float(__gamma)
+            else:
+                gamma = __gamma
 
-            # clf = svm.OneClassSVM(nu=float(__nu), kernel="rbf", gamma=gamma)
-            # clf.fit(inputs)
-            # localizer_log.stdout("Training completed: nu: " + str(__nu) + ", kernel: rbf, gamma:" + str(__gamma))
+            clf = svm.OneClassSVM(nu=float(__nu), kernel="rbf", gamma=gamma)
 
-            clf = svm.OneClassSVM(kernel="rbf")
-            localizer_log.stdout("Training started.")
             clf.fit(inputs)
-            localizer_log.stdout("Training completed.")
+            localizer_log.stdout("Training completed: nu: " + str(__nu) + ", kernel: rbf, gamma:" + str(__gamma))
+
             trained = True
 
             with open(__pred_cachefile, 'wb') as fl:
@@ -382,39 +355,42 @@ def predict():
         None
     """
     localizer_log.stdout("Received predict request.")
-    print("Received predict request.")
     global __predictor
     global trained
 
-    # print("Classifier used: nu: " + str(__predictor.nu) + ", kernel: " + str(__predictor.kernel) + ", gamma:" + str(__predictor.gamma))
-    # input()
+    global __pred_cachefile
+
+    if os.path.exists(__pred_cachefile):
+        with open(__pred_cachefile, 'rb') as fl:
+            clf = pickle.load(fl)
+            localizer_log.stdout("Read Predictor model from cache: " + __pred_cachefile)
+            trained = True
+    else:
+        localizer_log.warning("Predictor model could not be found in " + __pred_cachefile)
+        return 'Model not found', 501
+
+    localizer_log.stdout(
+        "Classifier loaded: nu: " + str(clf.nu) + ", kernel: " + str(clf.kernel) + ", gamma:" + str(clf.gamma))
 
     data = request.get_json()
     if data and 'anomalies' in data and check_data(data['anomalies']):
         parse_valid, parse_idx = convert_to_num(data['anomalies'])
-
         if parse_valid or parse_idx:
             valid, inputs = predict_api.format_input_single(parse_idx)
-
             if valid:
-                # scores = svm.cross_val_score(estimator=__predictor, X=inputs, scoring='accuracy', cv=5)
-                prediction = __predictor.predict([inputs])
-                # prediction = bool(prediction)
-                prediction = [False if x == 1 else True for x in prediction][0]  # True or False
+
+                # prediction = __predictor.predict([inputs])[0]
+                result = clf.predict([inputs])
+                prediction = [False if x == 1 else True for x in result][0]  # True or False
                 print(prediction)
 
                 ret = {'prediction': prediction}
                 if not parse_valid:
                     ret['warning'] = 'Some unseen KPI appears. Ignored it.'
-
                 return jsonify(ret)
-            else:
-                print("!valid")
-        else:
-            print("!parse_valid and !parse_idx")
     else:
-        localizer_log.warning("Prediction data not received, or key 'anomalies' not found")
-
+        localizer_log.warning(("prediction data not received, "
+                               "or key 'anomalies' not found"))
     return '', 500
 
 
@@ -429,11 +405,11 @@ def localize():
         None
     """
 
-    localizer_log.stdout("Received localize request.")
+    # localizer_log.stdout("@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@" + str(config.getint('oracle', 'rank_selection')))
 
+    localizer_log.stdout("Received localize request.")
     global kpi_initialized
     global gml_initialized
-
     data = request.get_json()
 
     # My code. Set rank selection
@@ -460,7 +436,29 @@ def localize():
         if not parse_valid:
             input('Some unseen KPI appears. Ignored it.')
 
+        # print("\nLocalize. Received Anomalous KPIs:")
+        # for item in parse_idx:
+        #     print(item)
+
         rankings, values = ranker().rank([term['idx'] for term in parse_idx])
+
+        # TODO: Remove it from the version for IC (application of clustering algorithm to the ranked kpi list for defining of an optimal rank_selection parameter)
+        kpi_rank_with_clustering = False
+        if kpi_rank_with_clustering:
+            # print("\nLocalize. KPIs: ", rankings)
+            # input("####### 0")
+            # print("Localize. KPI Rankings: ", values)
+            # input("####### 1")
+            needed_cluster_elements = utils_clustering.get_top_cluster_elements(values)
+            # print("needed_cluster_elements:", needed_cluster_elements)
+            # input("####### 2")
+            rank_selection = len(needed_cluster_elements)
+            # print("rank_selection:", rank_selection)
+            # input("####### 3")
+            config.set('oracle', 'rank_selection', rank_selection)
+            # print("New Rank Selection value:", config.getint('oracle', 'rank_selection'))
+            # input("####### 4")
+        # *** *** *** *** *** *** *** *** *** *** *** *** *** *** *** *** *** *** *** *** *** *** *** *** *** ***
 
         if config.get('restful', 'oracle') == "sum_oracle.SumOracle":
             _, rsc_sorted = oracle.check([list(zip(rankings, values))], None, 0)
@@ -522,6 +520,7 @@ def rank():
             parse_valid, parse_idx = convert_to_num(kpi_content)
 
             rankings, values = ranker().rank([term['idx'] for term in parse_idx], graph)
+            # print("rankings: ", rankings, "values: ", values)
 
             single_check, suspected_list, strong_sus = oracle.check([list(zip(rankings, values))], None, 0)
             ret = {'suspected_list': suspected_list, 'localization': strong_sus}
@@ -576,7 +575,7 @@ def convert_to_num(anomalies):
                                'metric': {'name': kpi.metric},
                                'idx': kpi.idx})
             else:
-                # input(term)
+                input(term)
                 ret = False
     except KeyError:
         localizer_log.warning("Anomalies are not organized as a list.")
@@ -586,5 +585,6 @@ def convert_to_num(anomalies):
 
 
 if __name__ == '__main__':
+    # port = config.getint('restful', 'service_port')
     port = sys.argv[1]
-    app.run(host='0.0.0.0', port=port, debug=True, use_reloader=False)
+    app.run(host='0.0.0.0', port=port, debug=True)

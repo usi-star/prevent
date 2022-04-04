@@ -1,4 +1,4 @@
-#!/Users/usi/Repositories/Replication-Packages/2021-Preface-RP/Toolset-Prevent-A/venv/bin/python3.7
+#!/Users/usi/Repositories/Replication-Packages/2021-Preface-RP/Toolset-Prevent-A/venv/bin/python
 # -*- coding: utf-8 -*-
 import re
 import sys

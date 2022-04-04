@@ -10,9 +10,6 @@ import yaml as yaml
 import logbook
 import pandas as pd
 
-#import anomalydetector.utils
-import utils
-
 THIS_DIRECTORY_PATH = os.path.dirname(os.path.abspath(__file__))
 
 

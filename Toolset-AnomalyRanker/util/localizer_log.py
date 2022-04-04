@@ -104,7 +104,7 @@ def output(s, tag):
                     tag=tag_str,
                     fun=caller,
                     msg=s)
-        # print(line)
+        print(line)
 
         for log_file in __log_files:
             write_log(log_file, line + '\n')

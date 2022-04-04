@@ -1,26 +1,5 @@
-import csv
-import json
-import logging
-import os
 from datetime import datetime
-from typing import Dict
-import numpy as np
-from ruamel.yaml import YAML
 from datetime import timezone
-
-
-def parse_yaml(file_path) -> Dict:
-    """
-    Parse a YAML file and load into a Python dictionary.
-
-    :param str file_path: The file path of the YAML file.
-    :return: The Python dictionary.
-    :rtype: Dict
-    """
-    yaml = YAML()
-    with open(file_path, mode='r') as file:
-        result = yaml.load(file)
-    return result
 
 
 # convert datetime object to timestamp in UTC

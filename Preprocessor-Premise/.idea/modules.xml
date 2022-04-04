@@ -2,7 +2,7 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
-      <module fileurl="file://$PROJECT_DIR$/.idea/Premise-DataPreprocessing.iml" filepath="$PROJECT_DIR$/.idea/Premise-DataPreprocessing.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/Preprocessor-Premise.iml" filepath="$PROJECT_DIR$/.idea/Preprocessor-Premise.iml" />
     </modules>
   </component>
 </project>

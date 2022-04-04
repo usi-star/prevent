@@ -219,14 +219,15 @@ The experiments compare:
 ### Folder: Results
 ### Summary
 
-> This folder contains a set of scripts consolidating and presenting the final results of the experiments.
+> This folder contains a set of scripts consolidating and presenting the final results of the experiments provided in the paper.
 
 ### Prerequisites:
 - OS: tested on macOS Catalina
 - Python version=3.7
 - Pip version=22.0.4
 
-### Environment
+### 1. cd Results
+### 2. Initialize the environment
     
     # Activate the environment
     source venv/bin/activate
@@ -236,9 +237,9 @@ The experiments compare:
 
 <br>
 
-### 1. Calculate False Positive Rate of predictions for Prevent-A, Prevent-E, and Loud (Table 3 of the paper)
+### 3. Calculate False Positive Rate of predictions for Prevent-A, Prevent-E, and Loud (Table 3 of the paper)
 
-    python results_fpr.py
+    python  results_fpr.py
 
 - Input:
     - Dataset: Classifications-Prevent-A :: normal_w3
@@ -248,7 +249,7 @@ The experiments compare:
 
 <br>
 
-### 2. Calculate Earliness and Stability of prediction for Prevent-A, Prevent-E, and Loud (Tables 4, 5, 6 of the paper)
+### 4. Calculate Earliness and Stability of prediction for Prevent-A, Prevent-E, and Loud (Tables 4, 5, 6 of the paper)
 
     python results_earliness_stability.py
 
@@ -261,7 +262,7 @@ The experiments compare:
 
 <br>
 
-### 3. Draw the Predictions graph for Prevent-A, Prevent-E, and Premise (Figures 6, 7, 8 of the paper)
+### 5. Draw the Predictions graph for Prevent-A, Prevent-E, and Premise (Figures 6, 7, 8 of the paper)
 
     python results_graph_predictions.py
 
@@ -274,7 +275,7 @@ The experiments compare:
 
 <br>
 
-### 4. Draw the ROC curve for Prevent-A, Prevent-E, and Premise (Figure 9 of the paper)
+### 6. Draw the ROC curve for Prevent-A, Prevent-E, and Premise (Figure 9 of the paper)
 
     python results_graph_roc.py
 
@@ -289,16 +290,26 @@ The experiments compare:
 <br>
 <br>
 
-## Toolsets and Replication Instructions
+
+
+## Toolsets and the replication instructions
 
 <br>
 
-### Global prerequisites
-
-- Python version=3.7
-- Pip version=22.0.4
-- Matlab version=2019b
-- JMV
+Unzip the following archives after cloning the repository:
+- resouces/data/Datasets-Raw-Splitted:
+    - normal_w1
+    - normal_w2
+    - normal_w3
+    - normal_w1_2
+- resouces/data/Datasets-Raw:
+    - normal_w1
+    - normal_w2
+    - normal_w3
+    - normal_w1_2
+- resouces/data/anomalies (in case you do not regenerate the anomalies on normal data - see the "Detect anomalies" paragraph of Prevent-A)
+    - normal_w2
+    - normal_w3
 
 <br>
 
@@ -313,11 +324,23 @@ The experiments compare:
 <br>
 
 #### Prerequisites:
+
+Software:
+
 - OS: tested on macOS Catalina
+- MatLab R2019b (no exertnal tool/package installed)
+
+Hardware used:
+
+- MacBook Pro, OS: macOS Catalina 10.15.4
+- Processor : 2.7 GHz Quad-Core Intel Core i7
+- RAM : 16 GB 1600 MHz DDR3
 
 <br>
 
-#### Train & Predict
+#### 1. cd Toolset-Prevent-E
+
+#### 2. Train & Predict
 
     Execute the main.m script in Matlab
 
@@ -328,7 +351,7 @@ The experiments compare:
         - Datasets-Raw-Splitted :: e1:9
         - Datasets-Raw-Splitted :: normal_w3
 - Output:
-    - Classifications-Prevent-E :: e1:9 (MA 2/3)
+    - Classifications-Prevent-E :: e1:9
     - Classifications-Prevent-E :: normal_w3
 
 
@@ -347,21 +370,22 @@ The experiments compare:
 
 #### Prerequisites:
 - OS: tested on macos Catalina
+- Python version 3.6
+- Pip version 22.0.4
+- Python virtual environment: pipenv (version 2018.11.26 used). Installation instructions - https://pypi.org/project/pipenv/
 
 <br>
 
-### Environment
+### 3. cd Toolset-AnomalyRanker
+### 4. Environment initialization
     
+    # Install packages
+    pipenv install
+
     # Activate the environment
-    - source venv/bin/activate
+    pipenv shell
 
-    # Install the packages
-    python -m pip install -r requirements.txt
-
-<br>
-
-#### Start the Anomaly Ranker server:
-
+    # Start the Anomaly Ranker server
     python ranker_app.py 5000
 
 <br><br>
@@ -380,113 +404,63 @@ The experiments compare:
 
 #### Prerequisites:
 - OS: tested on macos Catalina
+- Python version 3.7
+- Pip version 22.0.4
+- Anomaly Ranker server running on port 5000
 
 <br>
 
-#### Environment
+#### 5. cd Toolset-Prevent-A
+#### 6. Environment initialization
     
     # Activate the environment
-    - source venv/bin/activate
+    source venv/bin/activate
 
     # Install the packages
     python -m pip install -r requirements.txt
 
 <br>
 
-#### Update KPI list of the Anomaly Ranker server
-    8-Kpi-Update.ipynb
+#### 7. Detect anomalies
 
-<br>
+    python detect.py production
 
-#### Build Granger Causality Graph and set it to the Anomaly Ranker server
-    8-GCG-Build-Update.ipynb
-
-- Input: Datasets-Raw :: normal_w1_2
-- Output: Granger Causality graph
-
-<br>
-
-#### Train the Deep Autoencoder model
-    python ad_train.py
-
-- Input: Datasets-Raw-Splitted :: normal_w1
-- Output: Deep Autoencoder model
-
-<br>
-
-#### Detect anomalies on normal data
-    python ad_detect.py
-
-- Input: Datasets-Raw-Splitted :: normal_w2
-- Output: Anomalies :: normal_w2
-
-<br>
-
-#### Train the OCSVM Classifier model
-
-    python fp_train.py 5000
-
-- Input: Anomalies :: normal_w2
-- Output: OCSVM Classifier model
-
-<br>
-
-#### Detect anomalies
-
-    python ad_detect.py
-
-- Input: 
+- Input:
     - Datasets-Raw-Splitted :: e1:9
     - Datasets-Raw-Splitted :: normal_w3
+
 - Output:
     - Anomalies :: e1:9
     - Anomalies :: normal_w3
 
 <br>
 
-#### Classify anomalies on anomalous data
+#### 8. Make predictions
 
-    fp_predict.py 5000
-
-- Input: Anomalies :: e1:9
-- Output: Classifications-Prevent-A :: e1:9
-
-<br>
-
-#### Classify anomalies on normal data:
-
-    fp_predict_on_normal.py 5000
-
-- Input: Anomalies :: normal_w3 (json)
-- Output: Classifications-Prevent-A :: normal_w3 (json)
-
-<br>
-
-#### Convert Prevent-A predictions from json to csv
-    
-    python convert-predictions-json-to-csv-prevent.py
+    python predict.py
 
 - Input:
-    - Classifications-Prevent-A :: e1:9 (json)
-    - Classifications-Prevent-A :: normal_w3 (json)
+    - Anomalies :: e1:9
+    - Anomalies :: normal_w3
 - Output:
     - Classifications-Prevent-A :: e1:9
     - Classifications-Prevent-A :: normal_w3
 
 <br>
 
-#### Rank anomalous KPIs and Localize the nodes
+#### 9. Localize failures
 
     python rank.py
 
 - Input:
-    - Anomalies :: normal_w3
     - Anomalies :: e1:9
+    - Anomalies :: normal_w3
 - Output: 
-    - Localizations-Loud :: localizations-nodes :: normal_w3
-    - Localizations-Loud :: localizations-nodes :: e1:9
+    - Localizations-Loud :: e1:9
+    - Localizations-Loud :: normal_w3
 
 <br><br>
+
 
 ### Toolset: Premise Preprocessor
 #### Folder: Preprocessor-Premise
@@ -499,116 +473,37 @@ The experiments compare:
 <br>
 
 #### Prerequisites:
+
 - OS: tested on macos Catalina
+- Python version 3.7
+- Pip version 22.0.4
 
 <br>
 
-#### Environment
+#### 10. cd Preprocessor-Premise
+#### 11. Environment initialization
     
     # Activate the environment
-    - source venv/bin/activate
+    source venv/bin/activate
 
     # Install the packages
     python -m pip install -r requirements.txt
 
 <br>
 
-#### Convert anomalies from .json to .csv format
+#### 12. Preprocess the "Anomalies :: e1:9" dataset to be used by Premise
+> Shuffle the faulty node-pairs in the anomalous datasets (change the same faulty data between the node pairs). Output - one data set for each fault-type/node-pair combination.
 
-    python convert-anomalies-json-to-csv.py
+    python premise-data-preprocess.py
 
-- Input data: resources/data/1-anomalies-in-json (Anomalies :: e1:9)
-- Ouput data: AnomalyRanker:converted_files (Anomalies-CSV :: e1:9)
-
-<br>
-
-#### Shuffle data
-
-##### Shuffle the faulty node-pairs in the anomalous datasets (change the same faulty data between the node pairs). One data set for each fault-type/node-pair combination.
-
-    python change-pairs-headers.py
-
-- Input data: Anomalies-CSV :: e1:9
-- Output data: Anomalies-CSV :: e1:9 (Shuffled)
-
-<br>
-
-#### Create training and test datasets
-
-    python create-premise-data-sets.py
-
-- Input: Anomalies-CSV :: e1:9 (Shuffled)
+- Input: Anomalies :: e1:9
 - Output: Anomalies-Premise
-
-<br>
-
-#### Copy anomalies to the Premise toolset input folder
-
-- From: Anomalies-Premise
-- To: Toolset-Premise/data
 
 
 <br><br>
 
-### Toolset: Premise
-#### Project folder: Toolset-Premise
 
-<br>
-
-#### Summary
-
-> Premise predicts failures and localizes faults by combining an unsupervised approach for detecting anomalous KPIs with a signature-based approach for predicting failures. It gets sets of anomalous KPIs produced by the deep autoencoder as an input and produces sets of state classifications for each observed data sample with indication of the type and the source of failure (node of the cluster).
-
-<br>
-
-#### Prerequisites:
-- OS: tested on Ubuntu 20
-
-<br>
-
-#### Environment Initialization
-    
-    # Activate the environment
-    source venv/bin/activate
-    # Install the packages
-    python -m pip install -r requirements.txt
-
-<br>
-
-#### Train Model-0
-
-    python run.py train LMT-1_2_3_4_6 1
-
-- Input: Anomalies-Premise
-- Output: Premise-Model-0
-
-<br>
-
-#### Train Model-1
-
-    python run.py train LMT-7_8_9_10 1
-
-- Input: Anomalies-Premise
-- Output: Premise-Model-1
-
-<br>
-
-#### Make classifications using Model-0
-
-    python run.py predict LMT-1_2_3_4_6 1
-
-- Input: Anomalies-Premise
-- Output: Classifications-Premise-0
-
-<br>
-
-#### Make classifications using Model-1
-
-    python run.py predict LMT-7_8_9_10 1
-
-- Input: Anomalies-Premise-1
-- Output: Classifications-Premise-1
-
+### - See the section **RESULTS** of this document for the instructions on generation of the final results.
 
 
 <br><br>

@@ -1,0 +1,76 @@
+variables:
+  IMAGE_MASTER: $CI_REGISTRY_IMAGE:latest
+  IMAGE_PROD: $CI_REGISTRY_IMAGE:$CI_COMMIT_TAG
+  
+cache:
+  key: "$CI_COMMIT_REF_NAME"
+  paths:
+    - build
+    - .gradle
+  untracked: true
+
+
+stages:
+  - test
+  - build  
+  - deploy
+
+# Test Phase
+test:
+  image: python:3.5.1
+  stage: test 
+  script:
+    - echo "======================================================"
+    - echo " -->  Running tests"
+    - pip3 install -r requirements.txt
+    - apt-get update && apt-get install -y $(cat ubuntu_req.txt)
+    - cp config.sample config
+    - echo "Starting ranker_app"
+    - python3 ranker_app.py &
+    - sleep 3
+    - echo "Starting client_test"
+    - python3 RESTful/client_test.py
+
+# Deploy pahse
+deploy_staging:
+  image: docker:latest
+  stage: deploy
+  script:
+    - echo "======================================================"
+    - echo "Create image $IMAGE_MASTER"
+    - docker login -u gitlab-ci-token -p $CI_BUILD_TOKEN $CI_REGISTRY
+    - ls -al
+    - docker build -t $IMAGE_MASTER .
+    - docker push $IMAGE_MASTER
+    - docker logout $CI_REGISTRY
+  #environment:
+  # Need to install a deploy server like Kubernets
+  #  name: staging  
+  #  url: https://staging.example.com
+  only:
+    - master
+  tags:
+    # GitLab runner tag
+    - dockerbuilder
+
+
+# Deploy pahse
+deploy_production:
+  image: docker:latest
+  stage: deploy
+  script:
+    - echo "Create image $IMAGE_PROD"
+    - ls -al
+    - docker login -u gitlab-ci-token -p $CI_BUILD_TOKEN $CI_REGISTRY
+    - docker build -t $IMAGE_PROD .
+    - docker push $IMAGE_PROD
+    - docker logout $CI_REGISTRY
+  #environment:
+  # Need to install a deploy server like Kubernets
+  #  name: staging  
+  #  url: https://staging.example.com
+  only:
+    - tags
+  tags:
+    # GitLab runner tag
+    - dockerbuilder

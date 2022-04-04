@@ -1,11 +1,9 @@
 import csv
 import json
 import logging
-import os
 from datetime import datetime
 from typing import Dict
 import numpy as np
-# from ruamel.yaml import YAML
 import yaml as yaml
 from datetime import timezone
 
@@ -329,7 +327,7 @@ def get_hist(file_path):
     return mse_history
 
 
-def load_data(input_data_set_file="resources/titles.csv"):
+def load_data(input_data_set_file="../resources/kpi-list.csv"):
     with open(input_data_set_file, 'r') as f:
         reader = csv.reader(f, delimiter=',')
         header = next(reader)

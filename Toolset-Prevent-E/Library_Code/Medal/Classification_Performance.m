@@ -1,7 +1,7 @@
 function TPs = Classification_Performance(tr_up, tr_dw, fileName, outDir, FE)
 
     outDir = "./Output/";
-    outDir_ma = "./Output_ma/";
+    outDir_ma = "../resources/data/prevent-e/predictions/";
     
     HISTORY_CACHE = 3;
     CACHE_SUM_THR = 2;

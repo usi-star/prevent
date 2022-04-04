@@ -136,10 +136,10 @@ class BasicOracle(GeneralOracle, object):
                 or lst is empty.
         """
         counter = Counter(lst).most_common()  # keys - resources, values - number of entry of the resource to the list. All resources are considered.
-        counter_dicts = dict(counter)
-        # print("\nOracle. Resources sorted by the number of KPIs in top ranked KPIs list: ", counter_dicts)
+        couter_dicts = dict(counter)
+        # print("\nOracle. Resources sorted by the number of KPIs in top ranked KPIs list: ", couter_dicts)
 
-        suspect_list = list(zip(list(counter_dicts.keys()), list(counter_dicts.values())))
+        suspect_list = list(zip(list(couter_dicts.keys()), list(couter_dicts.values())))
         # print("\nOracle. Suspect_list: ", suspect_list)
 
         # A dict that maps count to resources

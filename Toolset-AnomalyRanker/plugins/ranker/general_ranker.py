@@ -49,7 +49,8 @@ class GeneralRanker(object):
 
         # print("\nGeneralRanker. Full matrix (from saved file):\n")
         # for item in full_matrix:
-        #     print(item)
+            # print(item)
+
         # print("\nGeneralRanker. Anomaly list: ", anomaly_list)
 
         sub_matrix = []

@@ -20,4 +20,4 @@ class RankTest(unittest.TestCase):
 
     def test_rank(self):
         response = self.__client.post('/rank', json=self.__data)
-        # print(response.data)
+        print(response.data)

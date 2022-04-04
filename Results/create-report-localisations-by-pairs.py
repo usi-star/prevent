@@ -4,7 +4,7 @@ import csv
 # **** Input
 faulty_master = "redis-14"
 faulty_slave = "redis-3"
-experiment_data_set_codes = ["e1", "e2", "e3", "e4", "e5", "e7", "e8", "e9"]
+experiment_data_set_codes = ["e1", "e2", "e3", "e4", "e5", "e6", "e7", "e8", "e9"]
 cluster_node_pairs_string = 'redis-14 redis-3, redis-12 redis-1, redis-5 redis-16, redis-18 redis-7, redis-4 redis-15, redis-9 redis-20, redis-8 redis-19, redis-6 redis-17, redis-10 redis-11, redis-2 redis-13'
 
 

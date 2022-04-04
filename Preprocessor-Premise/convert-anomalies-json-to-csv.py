@@ -1,54 +1,37 @@
-import os
-import sys
 import requests
-
 from datetime import datetime
-
 import utils
+import yaml as yaml
 
-from ruamel.yaml import YAML
-from typing import Dict
-
-# ******************************************************************************************* Configuration
-
-script_dir = os.path.dirname(os.path.abspath(__file__))
-
-data_sets_configuration_file_path = os.path.join(script_dir, 'resources/configuration/data_sets.yml')
-data_sets_configuration: Dict = utils.parse_yaml(data_sets_configuration_file_path)
-
-input_files_dir = "resources/data/1-anomalies-in-json/"
-
-# ******************************************************************************************* Inputs
-
-anomalies_file_name = str(sys.argv[1])
-experiment_data_set_code = str(sys.argv[2])
-
-# ****************************************************************************************** Data set Configuration
-
-fault_injection_time = data_sets_configuration['data_sets'][experiment_data_set_code]["fault_injection_time"]
-failure_time = data_sets_configuration['data_sets'][experiment_data_set_code]["failure_time"]
-
-fault_injection_time = datetime.strptime(fault_injection_time, '%Y.%m.%d.%H.%M')
-failure_time = datetime.strptime(failure_time, '%Y.%m.%d.%H.%M')
-
-fault_injection_timestamp = utils.datetime_timestamp_utc(fault_injection_time)
-failure_timestamp = utils.datetime_timestamp_utc(failure_time)
-
-# ******************************************************************************************* Local Configuration
-
-anomalies_file_path_json = os.path.join(script_dir, input_files_dir + anomalies_file_name)
+# **** Inputs
 
 fp_server_port = 5000
+exp_codes = ["e1", "e2", "e3", "e4", "e5", "e6", "e7", "e8", "e9"]
+
+# **** Paths
+
+root_folder = "../"
+configuration = yaml.load(open(root_folder + "resources/configuration/configuration.yml"), Loader=yaml.FullLoader)
+data_sets_configuration = yaml.load(open(root_folder + "resources/configuration/data_sets.yml"), Loader=yaml.FullLoader)
+
+anomalies_file_path_pattern = root_folder + "resources/data/anomalies/{exp_code}.txt"
 fp_server_address = 'http://localhost:' + str(fp_server_port)
 
-# ******************************************************************************************* Run
+# ***** Run
 
-fault_injection_timestamp = fault_injection_timestamp
-failure_timestamp = failure_timestamp
-fault_class_name = experiment_data_set_code
+for exp_code in exp_codes:
 
-print(fault_injection_timestamp, failure_timestamp, fault_class_name)
+    fault_injection_time = data_sets_configuration['data_sets'][exp_code]["fault_injection_time"]
+    failure_time = data_sets_configuration['data_sets'][exp_code]["failure_time"]
 
-with open(anomalies_file_path_json, 'r') as file:
-    response = requests.post(fp_server_address + '/convert_anomalies?anomalies_file_name=' + anomalies_file_name + '&fault_injection_timestamp=' + str(fault_injection_timestamp) + '&failure_timestamp=' + str(failure_timestamp) + '&fault_class_name=' + fault_class_name, data=file.read(), headers={"Content-Type": "application/json"})
-    print(response.content)
+    fault_injection_time = datetime.strptime(fault_injection_time, '%Y.%m.%d.%H.%M')
+    failure_time = datetime.strptime(failure_time, '%Y.%m.%d.%H.%M')
+
+    fault_injection_timestamp = utils.datetime_timestamp_utc(fault_injection_time)
+    failure_timestamp = utils.datetime_timestamp_utc(failure_time)
+
+    print(fault_injection_timestamp, failure_timestamp, exp_code)
+
+    with open(anomalies_file_path_pattern.format(exp_code=exp_code), 'r') as file:
+        response = requests.post(fp_server_address + '/convert_anomalies?anomalies_file_name=' + exp_code + '&fault_injection_timestamp=' + str(fault_injection_timestamp) + '&failure_timestamp=' + str(failure_timestamp) + '&fault_class_name=' + exp_code, data=file.read(), headers={"Content-Type": "application/json"})
+        print(response.content)

@@ -94,6 +94,10 @@ def initialize(kpi_json):
 
     kpis = kpilst_reader.read(kpi_json)
 
+    # print("\n KPIs from the saved file:\n")
+    # for ii in range(len(kpis)):
+    #     print(kpis[ii])
+
     if kpis is None:
         return False
     else:
